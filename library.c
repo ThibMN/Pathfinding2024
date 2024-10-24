@@ -16,7 +16,7 @@ typedef struct nde{
 typedef struct n{
     int value;
     struct n* next;
-}NodeArray
+}NodeArray;
 
 // retourne un tableau de node contenant l’ensemble des nœuds du graphe
 GNode** init_node( char *file){
@@ -51,26 +51,26 @@ GNode** init_node( char *file){
 
 // verifie si un noeud est dans une liste
 int isInTab(GNode *table,GNode object){
-    for(int i,i<strlen(table),i++){
+    for(int i;i<strlen(table);i++){
         if (table[i]==object){
-            return 1
+            return 1;
         }
     }
-    return 0
+    return 0    
 }
 
 int* getLinks(FILE *file){
     char buffer[256]; //Initialisation d'un buffer pour retourner la chaine de caractère voulues
-    int counter=1
+    int counter=1;
     while (fgets(buffer, sizeof(buffer), file) != NULL){
         if (strcmp(buffer,"#links\n") == 0){
             while (fgets(buffer, sizeof(buffer), file) != NULL){
                 int **linkList= realloc(linkList,counter*sizeof(int)*2);
-                linkList[counter-1]=[buffer[0],buffer[2]]
+                linkList[counter-1]=[buffer[0],buffer[2]];
                 
-                counter++
+                counter++;
             }
-            return linkList
+            return linkList;
         }
     }
 
