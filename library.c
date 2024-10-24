@@ -5,13 +5,77 @@
 #include <unistd.h>
 #include "library.h"
 
-// initialising graph nodes
+// initialisation des nodes de graph et liste chainées
 
 typedef struct nde{
     int name;
     //array of node pointers
     struct nde **links;
-}Nodes;
+}GNode;
+
+typedef struct n{
+    int value;
+    struct n* next;
+}NodeArray
+
+// retourne un tableau de node contenant l’ensemble des nœuds du graphe
+GNode** init_node( char *file){
+    int **link=getLinks(file);
+    GNode initialisedNode;
+    GNode *nodeTable[];
+    for (int i,i<strlen(link),i++){
+        initialisedNode = GNode link[i][0];
+        initialisedNode->links = realloc(initialisedNode->links,sizeof(GNode)*strlen(initialisedNode->links)+sizeof(GNode));
+        initialisedNode->links[strlen(links)-1]= GNode link[i][0]
+        if (isInTab(nodeTable,initialisedNode)==0){
+            nodeIndex = strlen(nodeTable);
+            nodeTable=realloc(nodeTable,sizeof(GNode)*strlen(nodeTable)+sizeof(GNode));
+            nodeTable[nodeIndex]=initialisedNode;
+            
+        }
+
+        initialisedNode = GNode link[i][1];
+        initialisedNode->links = realloc(initialisedNode->links,sizeof(GNode)*strlen(initialisedNode->links)+sizeof(GNode));
+        initialisedNode->links[strlen(links)-1]= GNode link[i][1]
+        if (isInTab(nodeTable,initialisedNode)==0){
+            nodeIndex = strlen(nodeTable);
+            nodeTable=realloc(nodeTable,sizeof(GNode)*strlen(nodeTable)+sizeof(GNode));
+            nodeTable[nodeIndex]=initialisedNode;
+            
+        }
+    }
+    free(linkList);
+    return *nodeTable
+}
+
+
+// verifie si un noeud est dans une liste
+int isInTab(GNode *table,GNode object){
+    for(int i,i<strlen(table),i++){
+        if (table[i]==object){
+            return 1
+        }
+    }
+    return 0
+}
+
+int* getLinks(FILE *file){
+    char buffer[256]; //Initialisation d'un buffer pour retourner la chaine de caractère voulues
+    int counter=1
+    while (fgets(buffer, sizeof(buffer), file) != NULL){
+        if (strcmp(buffer,"#links\n") == 0){
+            while (fgets(buffer, sizeof(buffer), file) != NULL){
+                int **linkList= realloc(linkList,counter*sizeof(int)*2);
+                linkList[counter-1]=[buffer[0],buffer[2]]
+                
+                counter++
+            }
+            return linkList
+        }
+    }
+
+    return -1;
+}
 
 // scans file and compares if it is mentioned in the #links
 int* getNoLinks(FILE *file);
@@ -20,7 +84,7 @@ int* getNoLinks(FILE *file);
 int* sizeCompare(int** array);
 
 // scans the graph by branching out on every links of the starting node
-int** DepthScan(Nodes nde);
+int** DepthScan(GNode nde);
 
 int getStart(FILE *file){
     char buffer[256]; //Initialisation d'un buffer pour retourner la chaine de caractère voulue
@@ -53,6 +117,7 @@ int getEnd(FILE *file){
 
     return -1;
 }
+
 
 int getGraphSize(FILE *file){
     char buffer[256];
