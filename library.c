@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include "library.h"
 
+#define MAX_NODES 100  // Limite du nombre de noeuds dans le fichier
+
 // initialisation des nodes de graph et liste chainées
 
 typedef struct nde{
@@ -121,17 +123,24 @@ int getEnd(FILE *file){
 
 int getGraphSize(FILE *file){
     char buffer[256];
+    int nodes[MAX_NODES] = {0};
+    int nodeCount = 0;
 
-    while (fgets(buffer, sizeof(buffer), file) != NULL){
-        if (strcmp(buffer,"#links\n") == 0){
-            if (fgets(buffer, sizeof(buffer), file) != NULL) { 
-                int node_numbers = 1;
-                for (int i = 0; buffer[i] != '\0';i++){
-                    if (strcmp(&buffer[i], "-") == 0){
-                        node_numbers++;
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        if (strcmp(buffer, "#node\n") == 0) {
+            if (fgets(buffer, sizeof(buffer), file) != NULL) {
+                char *token = strtok(buffer, "-\n");
+
+                while (token != NULL) {
+                    int node = atoi(token);
+
+                    if (node < MAX_NODES && nodes[node] == 0) {
+                        nodes[node] = 1;
+                        nodeCount++;
                     }
+                    token = strtok(NULL, "-\n");
                 }
-                return node_numbers;
+                return nodeCount;
             } else {
                 return 0;
             }
