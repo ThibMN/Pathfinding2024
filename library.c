@@ -15,9 +15,9 @@ typedef struct nde{
     struct nde **links;
 }GNode;
 
-typedef struct n{
+typedef struct n1{
     int value;
-    struct n* next;
+    struct n1* next;
 }NodeArray;
 
 // retourne un tableau de node contenant l’ensemble des nœuds du graphe

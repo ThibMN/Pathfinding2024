@@ -18,5 +18,11 @@ int main(int a, char *filename[]){
         return -1;
     }
 
+    printf("nombre de noeud(s): %d\n",getGraphSize(file));
+    printf("nombre de lien(s): %d\n");
+    printf("start: %d\n",getStart(file));
+    printf("end: %d\n",getEnd(file));
+    printf("pathfiding:\n");
+
     return 0;
 }
