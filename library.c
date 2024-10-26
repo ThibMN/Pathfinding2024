@@ -76,7 +76,7 @@ int* getLinks(FILE *file){
         }
     }
 
-    return -1;
+    return FILE_NOT_FOUND;
 }
 
 // scans file and compares if it is mentioned in the #links
@@ -101,7 +101,7 @@ int getStart(FILE *file){
         }
     }
 
-    return -1;
+    return NO_START_NODE;
 }
 
 int getEnd(FILE *file){
@@ -117,7 +117,7 @@ int getEnd(FILE *file){
         }
     }
 
-    return -1;
+    return NO_END_NODE;
 }
 
 

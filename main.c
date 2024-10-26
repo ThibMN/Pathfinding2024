@@ -15,7 +15,7 @@ int main(int a, char *filename[]){
     // Teste si le fichier est bien ouvert
     if (file == NULL){
         printf("Erreur dans l'ouverture du fichier\n");
-        return -1;
+        return FILE_NOT_FOUND;
     }
 
     printf("nombre de noeud(s): %d\n",getGraphSize(file));
