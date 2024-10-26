@@ -56,8 +56,11 @@ int getStart(FILE *file);
 // Trouve le dernier noeud
 int getEnd(FILE *file);
 
+// Renvoie les liens
+int* getLinks(FILE *file);
+
 // retourne un tableau de node contenant l’ensemble des nœuds du graphe
-GNode** init_node( char *file);
+GNode** init_node(FILE *file                    );
 
 // verifie si un noeud est dans une liste
 int isInTab(GNode *table,GNode object);

@@ -5,15 +5,16 @@
 #include <unistd.h>
 #include "library.h"
 
-#define MAX_NODES 100  // Limite du nombre de noeuds dans le fichiers
+#define MAX_NODES 100  // Limite    du nombre de noeuds dans le fichiers
 
 // retourne un tableau de GNode contenant l’ensemble des nœuds du graphe
 GNode** init_node(FILE *file){
     int **link=getLinks(file);
     GNode initialisedNode;
     GNode nodeTable[];
+    int nodeIndex;
     for (int i,i<strlen(link),i++){
-        initialisedNode = GNode link[i][0];
+        initialisedNode.name = link[i][0];
         
         if (isInTab(nodeTable,initialisedNode.name)==0){
             nodeIndex = strlen(nodeTable);
@@ -22,7 +23,7 @@ GNode** init_node(FILE *file){
             initialisedNode->links = realloc(initialisedNode->links,sizeof(GNode)*strlen(initialisedNode->links)+sizeof(GNode));
         }
 
-        initialisedNode = GNode link[i][1];
+        initialisedNode.name = link[i][1];
         
         if (isInTab(nodeTable,initialisedNode.name)==0){
             nodeIndex = strlen(nodeTable);
@@ -34,13 +35,12 @@ GNode** init_node(FILE *file){
     char buffer[256]; //Initialisation d'un buffer pour retourner la chaine de caractère voulues
     while (fgets(buffer, sizeof(buffer), file) != "#links\n"){
         if(isInTab(nodeTable, buffer[0])==1 && buffer[0]!="#"){
-            nodeTable=realloc(nodeTable,sizeof(GNode)*strlen(nodeTable)+sizeof(GNode))
-            initialisedNode=buffer[0]
-            initialisedNode.name= buffer[0]
-            nodeTable[strlen(nodeTable)-1]= initialisedNode
+            nodeTable=realloc(nodeTable,sizeof(GNode)*strlen(nodeTable)+sizeof(GNode));
+            initialisedNode.name= buffer[0];
+            nodeTable[strlen(nodeTable)-1]= initialisedNode;
         }
     }
-    return nodeTable
+    return nodeTable;
     
 }
 
