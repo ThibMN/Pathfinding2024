@@ -13,6 +13,31 @@ typedef struct n {
     struct n **links;
 } Node;
 
+// initialisation des nodes de graph et liste chainées
+
+typedef struct nde{
+    int name;
+    //array of node pointers
+    struct nde **links;
+}GNode;
+
+typedef struct n1{
+    int value;
+    struct n1* next;
+}NodeArray;
+
+// Structure pour un élément de la file d'attente
+typedef struct QueueNode {
+    GNode *node;
+    struct QueueNode *parent;
+} QueueNode;
+
+// Structure file 
+typedef struct Queue {
+    QueueNode **items;
+    int front, rear, max_size;
+} Queue;
+
 // scans file and compares if it is mentioned in the #links
 int* getNoLinks(FILE *file);
 
@@ -20,7 +45,7 @@ int* getNoLinks(FILE *file);
 int* sizeCompare(int** array);
 
 // scans the graph by branching out on every links of the starting node
-int** DepthScan(Node nde);
+int** getPath(Node nde);
 
 // counts the number of nodes mentionned in a file 
 int getGraphSize(FILE *file);
@@ -30,3 +55,9 @@ int getStart(FILE *file);
 
 // Trouve le dernier noeud
 int getEnd(FILE *file);
+
+// retourne un tableau de node contenant l’ensemble des nœuds du graphe
+GNode** init_node( char *file);
+
+// verifie si un noeud est dans une liste
+int isInTab(GNode *table,GNode object);
