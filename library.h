@@ -60,7 +60,7 @@ int getEnd(FILE *file);
 int* getLinks(FILE *file);
 
 // retourne un tableau de node contenant l’ensemble des nœuds du graphe
-GNode** init_node(FILE *file                    );
+GNode** init_node(FILE *file);
 
 // verifie si un noeud est dans une liste
 int isInTab(GNode *table,GNode object);

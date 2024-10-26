@@ -7,41 +7,60 @@
 
 #define MAX_NODES 100  // Limite    du nombre de noeuds dans le fichiers
 
-// retourne un tableau de GNode contenant l’ensemble des nœuds du graphe
-GNode** init_node(FILE *file){
-    int **link=getLinks(file);
-    GNode initialisedNode;
-    GNode nodeTable[];
-    int nodeIndex;
-    for (int i,i<strlen(link),i++){
+GNode** init_node(FILE *file) {
+    int **link = getLinks(file);
+    GNode *nodeTable = NULL;
+    int nodeCount = 0;
+    int linkCount = strlen(link); // Ajuster cette fonction en fonction du type de retour de getLinks
+
+    for (int i = 0; i < linkCount; i++) {
+        GNode initialisedNode;
+
+        // Initialisation pour le premier noeud du lien
         initialisedNode.name = link[i][0];
-        
-        if (isInTab(nodeTable,initialisedNode.name)==0){
-            nodeIndex = strlen(nodeTable);
-            nodeTable=realloc(nodeTable,sizeof(GNode)*strlen(nodeTable)+sizeof(GNode));
-            nodeTable[nodeIndex]=initialisedNode;
-            initialisedNode->links = realloc(initialisedNode->links,sizeof(GNode)*strlen(initialisedNode->links)+sizeof(GNode));
+        if (!isInTab(nodeTable, initialisedNode.name, nodeCount)) {
+            nodeTable = realloc(nodeTable, sizeof(GNode) * (nodeCount + 1));
+            if (nodeTable == NULL) {
+                perror("Erreur de realloc");
+                exit(EXIT_FAILURE);
+            }
+            nodeTable[nodeCount] = initialisedNode;
+            nodeTable[nodeCount].links = NULL;
+            nodeCount++;
         }
 
+        // Initialisation pour le second noeud du lien
         initialisedNode.name = link[i][1];
-        
-        if (isInTab(nodeTable,initialisedNode.name)==0){
-            nodeIndex = strlen(nodeTable);
-            nodeTable=realloc(nodeTable,sizeof(GNode)*strlen(nodeTable)+sizeof(GNode));
-            nodeTable[nodeIndex]=initialisedNode;
-            initialisedNode->links = realloc(initialisedNode->links,sizeof(GNode)*strlen(initialisedNode->links)+sizeof(GNode));
+        if (!isInTab(nodeTable, initialisedNode.name, nodeCount)) {
+            nodeTable = realloc(nodeTable, sizeof(GNode) * (nodeCount + 1));
+            if (nodeTable == NULL) {
+                perror("Erreur de realloc");
+                exit(EXIT_FAILURE);
+            }
+            nodeTable[nodeCount] = initialisedNode;
+            nodeTable[nodeCount].links = NULL;
+            nodeCount++;
         }
     }
-    char buffer[256]; //Initialisation d'un buffer pour retourner la chaine de caractère voulues
-    while (fgets(buffer, sizeof(buffer), file) != "#links\n"){
-        if(isInTab(nodeTable, buffer[0])==1 && buffer[0]!="#"){
-            nodeTable=realloc(nodeTable,sizeof(GNode)*strlen(nodeTable)+sizeof(GNode));
-            initialisedNode.name= buffer[0];
-            nodeTable[strlen(nodeTable)-1]= initialisedNode;
+
+    // Lecture des liens supplémentaires
+    char buffer[256];
+    while (fgets(buffer, sizeof(buffer), file) && strcmp(buffer, "#links\n") != 0) {
+        if (buffer[0] != '#' && !isInTab(nodeTable, buffer[0], nodeCount)) {
+            GNode additionalNode;
+            additionalNode.name = buffer[0];
+            nodeTable = realloc(nodeTable, sizeof(GNode) * (nodeCount + 1));
+            if (nodeTable == NULL) {
+                perror("Erreur de realloc");
+                exit(EXIT_FAILURE);
+            }
+            nodeTable[nodeCount] = additionalNode;
+            nodeTable[nodeCount].links = NULL;
+            nodeCount++;
         }
     }
+
     return nodeTable;
-    
 }
 
 // scanne récursivement tout le graph
@@ -79,8 +98,8 @@ int* display_nodes(GNode *startNode) {
 
     // Redimensionner le tableau résultat pour qu'il contienne uniquement les nœuds trouvés
     result = realloc(result, count * sizeof(int));
-    for (int i,i<strlen(result),i++){
-        printf("%d ",result[i])
+    for (int i;i<strlen(result);i++){
+        printf("%d ",result[i]);
     }
     return result;
 }
@@ -88,28 +107,28 @@ int* display_nodes(GNode *startNode) {
 
 //retourne un pointeur vers le nœud recherché
 GNode* get_node_by_id( GNode **nodes, int id ){
-    for(int i,i<strlen(nodes),i++){
+    for(int i;i<strlen(nodes);i++){
         if (nodes[i].name == id){
             GNode *nodePtr = &nodes[i];
             return nodePtr;
         }
     }
-    return -1
+    return -1;
 }
 
 // verifie si un noeud est dans une liste
 int isInTab(GNode *table,GNode object.name){
-    for(int i,i<strlen(table),i++){
+    for(int i;i<strlen(table);i++){
         if (table[i].name==object.name){
-            return 1
+            return 1;
         }
     }
-    return 0
+    return 0;
 }
 
 int* getLinks(FILE *file){
     char buffer[256]; //Initialisation d'un buffer pour retourner la chaine de caractère voulues
-    int counter=1
+    int counter=1;
     while (fgets(buffer, sizeof(buffer), file) != NULL ){
         if (strcmp(buffer,"#links\n") == 0){
             while (fgets(buffer, sizeof(buffer), file) != NULL){
@@ -121,7 +140,7 @@ int* getLinks(FILE *file){
             }
             int **listResult =linkList;
             free(linkList);
-            return listResult
+            return listResult;
         }
     }
 
@@ -130,15 +149,15 @@ int* getLinks(FILE *file){
 
 // compare entre la liste de noeuds connectée et la liste de tous les noeuds
 GNode** get_unconnected_nodes(GNode **nodes, GNode *head ){
-    int *connected_nodes = display_nodes(head)
+    int *connected_nodes = display_nodes(head);
     GNode **loneNodes;
-    for(int i,i<strlen(nodes),i++){
+    for(int i;i<strlen(nodes);  i++){
         if(isInTab(connected_nodes,nodes[i].name)==0){
-            lone_nodes=realloc(lone_nodes,sizeof(Gnode)*(strlen(lone_nodes)+1))
-            lone_nodes[strlen(lone_nodes)-1]=nodes[i]
+            lone_nodes=realloc(lone_nodes,sizeof(Gnode)*(strlen(lone_nodes)+1));
+            lone_nodes[strlen(lone_nodes)-1]=nodes[i];
         }
     }
-    return lone_nodes
+    return lone_nodes;
 }
 
 // Fonction pour initialiser la file d'attente
